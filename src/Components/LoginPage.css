@@ -1,0 +1,58 @@
+.loginpage_section {
+  background-image: url(/src/Assets/login_img1.1.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login_form {
+  padding: 2.5em 8em;
+  background-color: #fffc00;
+  border-radius: 0.1em;
+  -webkit-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
+  box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
+}
+
+.login_form .logo_span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3em;
+  filter: drop-shadow(4px 2px 35px #a4a4a4);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+.login_form .login_google_btn,
+.login_form .login_facebook_btn {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  color: #2f2e2e;
+  margin-bottom: 10px;
+  border-radius: 40px;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  padding: 5px 30px;
+  cursor: pointer;
+  box-shadow: 5px 5px 5px rgba(133, 133, 133, 0.227);
+}
+
+.login_form .login_facebook_btn {
+  padding: 15px 40px;
+}
+
+.login_form .login_facebook_btn span {
+  margin-left: 10px;
+}
+
+.login_form .login_facebook_btn:hover,
+.login_form .login_google_btn:hover {
+  background-color: #e8e8df;
+  transition: all 600ms ease-in;
+}
