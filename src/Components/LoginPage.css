@@ -1,5 +1,4 @@
 .loginpage_section {
-  background-image: url(/src/Assets/login_img1.1.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
@@ -9,50 +8,82 @@
   justify-content: center;
 }
 
+.backgroundImg-1 {
+  background-image: url(/src/Assets/login_img1.1.jpg);
+}
+.backgroundImg-2 {
+  background-image: url(/src/Assets/login_img2.2.jpg);
+}
+.backgroundImg-3 {
+  background-image: url(/src/Assets/login_img3.3.jpg);
+}
+.backgroundImg-4 {
+  background-image: url(/src/Assets/login_img4.4.jpg);
+}
+.backgroundImg-5 {
+  background-image: url(/src/Assets/login_img5.5.jpg);
+}
+.backgroundImg-6 {
+  background-image: url(/src/Assets/login_img6.6.jpg);
+}
+
 .login_form {
-  padding: 2.5em 8em;
+  padding: 1.8em 7em;
   background-color: #fffc00;
-  border-radius: 0.1em;
+  border-radius: 1em;
   -webkit-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   -moz-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login_form .logo_span {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 3em;
+  margin-bottom: 2em;
   filter: drop-shadow(4px 2px 35px #a4a4a4);
 }
 
+.login_form .login-submitBtn {
+  background-color: #232323;
+  padding: 0.2em 1em;
+  margin-top: 1.5em;
+  font-weight: 600;
+}
+.login_form .login-submitBtn:hover {
+  background-color: #313131;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
-.login_form .login_google_btn,
-.login_form .login_facebook_btn {
+.login_form .login_google_btn {
   display: flex;
   align-items: center;
   background-color: #fff;
-  color: #2f2e2e;
+  color: #232323;
   margin-bottom: 10px;
-  border-radius: 40px;
-  font-size: 1em;
+  border-radius: 0.5rem;
+  font-size: 0.8em;
   font-weight: 600;
   font-family: "Inter", sans-serif;
   padding: 5px 30px;
   cursor: pointer;
-  box-shadow: 5px 5px 5px rgba(133, 133, 133, 0.227);
+  box-shadow: 3px 3px 5px #48484817;
+  width: 96%;
 }
 
-.login_form .login_facebook_btn {
-  padding: 15px 40px;
+.login_form .login_google_btn span {
+  padding-left: 5px;
 }
 
-.login_form .login_facebook_btn span {
-  margin-left: 10px;
-}
-
-.login_form .login_facebook_btn:hover,
 .login_form .login_google_btn:hover {
   background-color: #e8e8df;
   transition: all 600ms ease-in;
+}
+
+.login_form .login_google_btn:disabled{
+  background-color: rgba(255, 255, 255, 0.684);
 }
