@@ -51,7 +51,7 @@
 .login_form .login-submitBtn {
   background-color: #232323;
   padding: 0.2em 1em;
-  margin-top: 1.5em;
+  margin-top: 1.2em;
   font-weight: 600;
 }
 .login_form .login-submitBtn:hover {
@@ -62,7 +62,7 @@
 .login_form .login_google_btn {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #fefefe;
   color: #232323;
   margin-bottom: 10px;
   border-radius: 0.5rem;
@@ -77,13 +77,14 @@
 
 .login_form .login_google_btn span {
   padding-left: 5px;
+  white-space: nowrap;
 }
 
 .login_form .login_google_btn:hover {
-  background-color: #e8e8df;
+  background-color: #ebebe3;
   transition: all 600ms ease-in;
 }
 
-.login_form .login_google_btn:disabled{
+.login_form .login_google_btn:disabled {
   background-color: rgba(255, 255, 255, 0.684);
 }

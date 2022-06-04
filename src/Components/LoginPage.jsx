@@ -24,57 +24,37 @@ const allowedUsername = (val) => {
 
 const LoginPage = () => {
     const [randomBGImgVal, setRandomBGImgVal] = useState();
+
     const [usernameVal, setUsernameVal] = useState('');
     const [passwdVal, setPasswdVal] = useState('');
     const [showLoginForm, setShowLoginForm] = useState(true);
     const [showSignupForm, setShowSignupForm] = useState(false);
     const [newUsernameVal, setNewUsernameVal] = useState('');
-    const [signInErrorMssgStyle, setSignInErrorMssgStyle] = useState({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-    const [redErrorBelowMssg, setRedErrorBelowMssg] = useState('*Atleast 4 characters *Only lowercase letters, numbers, period and underscores are allowed.')
-
-    const [newPasswdVal_1, setNewPasswdVal_1] = useState('');
-    const [newPasswdVal_2, setNewPasswdVal_2] = useState('');
 
     const googlBtnHandler = () => {
-        if (newPasswdVal_1 === newPasswdVal_2 && newPasswdVal_1.length >= 6 && newPasswdVal_2 >= 6 && newUsernameVal.length >= 4) {
-            console.log('SIGN IN PROCESS STARTED !⚡');
-            const googleProvider = new GoogleAuthProvider();
-            signInWithPopup(auth, googleProvider)
-                .then((data) => {
+        console.log('SIGN IN PROCESS STARTED !⚡');
+        const googleProvider = new GoogleAuthProvider();
+        signInWithPopup(auth, googleProvider)
+            .then((data) => {
 
-                    const userColsRef = collection(db, 'userprofiles');
-                    addDoc(userColsRef, {
-                        username: newUsernameVal,
-                        uid: data.user.uid,
-                        displayName: data.user.displayName,
-                        email: data.user.email,
-                        emailVerified: data.user.emailVerified,
-                        photoURL: data.user.photoURL,
-                        creationTime: data.user.metadata.creationTime
-                    }).then(() => {
-                        console.log('PROFILE CREATED SUCESSFULLY ☠️')
-                    }).catch((err) => {
-                        console.log(err)
-                    })
-
+                const userColsRef = collection(db, 'userprofiles');
+                addDoc(userColsRef, {
+                    username: newUsernameVal,
+                    uid: data.user.uid,
+                    displayName: data.user.displayName,
+                    email: data.user.email,
+                    emailVerified: data.user.emailVerified,
+                    photoURL: data.user.photoURL,
+                    creationTime: data.user.metadata.creationTime
+                }).then(() => {
+                    console.log('PROFILE CREATED SUCESSFULLY ☠️')
                 }).catch((err) => {
                     console.log(err)
                 })
-        } else if (newUsernameVal.length < 4) {
-            console.log('SIGN-IN NOT STARTED ❎');
-            setRedErrorBelowMssg('*Username must be >= 4.')
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em' })
-            setTimeout(() => {
-                setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-            }, 8000);
-        } else if (newPasswdVal_1 === newPasswdVal_2){
-            console.log('SIGN-IN NOT STARTED ❎');
-            setRedErrorBelowMssg("*Passwords do not match.")
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em' })
-            setTimeout(() => {
-                setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-            }, 8000);
-        } 
+
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
     // LOGIN-IN HANDLERS
@@ -85,17 +65,14 @@ const LoginPage = () => {
         setPasswdVal(event.target.value);
     }
 
-    const newUsernameFieldHandler = (event) => {
-        setNewUsernameVal(allowedUsername(event.target.value));
-        setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em' })
-        setRedErrorBelowMssg('*Atleast 4 characters *Only lowercase letters, numbers, period and underscores are allowed.')
-        setTimeout(() => {
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-        }, 8000);
+    const submitLoginHandler = () => {
+        // DETAILS WILL BE SENT TO FIREBASE 🔥🤨
     }
 
-    const submitLoginHandler = () => {
+    // SIGN UP DETAILS
+    const newUsernameFieldHandler = (event) => {
 
+        setNewUsernameVal(allowedUsername(event.target.value));
     }
 
     const signupTxtHandler = () => {
@@ -108,35 +85,11 @@ const LoginPage = () => {
         setShowSignupForm(false)
     }
 
-    const newPasswdFieldHandler_1 = (event) => {
-        setNewPasswdVal_1(event.target.value);
-        if (event.target.value.length !== 6) {
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em' })
-            setRedErrorBelowMssg('*Minimum password length should be 6.')
-        } else if (event.target.value.length <= 6) {
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-        }
-    }
-
-    const newPasswdFieldHandler_2 = (event) => {
-        setNewPasswdVal_2(event.target.value);
-        if (newPasswdVal_1 !== event.target.value) {
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em' })
-            setRedErrorBelowMssg('*Passwords do not match!')
-            console.log('lmao')
-        } else if (newPasswdVal_1 === event.target.value) {
-            setSignInErrorMssgStyle({ color: 'red', fontSize: '0.5em', visibility: 'hidden' })
-        }
-    }
-
-
     useEffect(() => {
         console.log(auth)
-    }, [])
-
-    useEffect(() => {
         setRandomBGImgVal(getRandomNumberGenerator())
     }, [])
+
     return (
         <section className={`loginpage_section ${'backgroundImg-' + randomBGImgVal}`}>
             <div className="login_form">
@@ -194,42 +147,21 @@ const LoginPage = () => {
                                     onChange={newUsernameFieldHandler}
                                     placeholder="username"
                                     spellCheck="false"
-                                    minLength={3}
-                                />
-                            </USERNAME_PASSWORD>
-                            <USERNAME_PASSWORD>
-                                <KeyIcon />
-                                <INPUT
-                                    type="password"
-                                    value={newPasswdVal_1}
-                                    onChange={newPasswdFieldHandler_1}
-                                    placeholder="create a password"
-                                    minLength={6}
-                                />
-                            </USERNAME_PASSWORD>
-                            <USERNAME_PASSWORD>
-                                <KeyIcon />
-                                <INPUT
-                                    type="password"
-                                    value={newPasswdVal_2}
-                                    onChange={newPasswdFieldHandler_2}
-                                    placeholder="re-write your password"
-                                    minLength={6}
                                 />
                             </USERNAME_PASSWORD>
                             <Button
                                 onClick={googlBtnHandler}
-                                // disabled={googleBtnAvail}
+                                disabled={newUsernameVal.length !== 6}
                                 className='login_google_btn' variant='contained'>
-                                <img src={GOOGLE_LOGO} alt="google_logo" height="40px" />
+                                <img src={GOOGLE_LOGO} alt="google_logo" height="30px" />
 
                                 <span>
                                     Sign in with Google
                                 </span>
                             </Button>
 
-                            <p style={signInErrorMssgStyle} className='signInErrorMssg'>
-                                {redErrorBelowMssg}
+                            <p className='signInErrorMssg'>
+                                {'redErrorBelowMssg'}
                             </p>
                         </SIGNUP_FORM>
 
@@ -240,8 +172,8 @@ const LoginPage = () => {
             </div>
         </section >
     )
-}
 
+}
 
 const SIGNUP_FORM = STYLED.form`
 display: flex;
