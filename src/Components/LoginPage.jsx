@@ -6,10 +6,11 @@ import GOOGLE_LOGO from '../Assets/google_logo.png';
 import { auth } from '../firebase-config';
 import { db } from '../firebase-config';
 import AtIcon from '@mui/icons-material/AlternateEmail';
-import KeyIcon from '@mui/icons-material/Key';
 import { Button } from '@mui/material';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
+import ClearIcon from '@mui/icons-material/Clear';
+import CHALK from 'chalk';
 
 // GENERATING RANDOM NUMBER FROM 1 TO 6..... TO SET A RANDOM BACKGROUND-IMG
 const getRandomNumberGenerator = () => {
@@ -17,27 +18,67 @@ const getRandomNumberGenerator = () => {
 }
 
 const allowedUsername = (val) => {
-    const regex = /[a-zA-Z0-9._]/gi
-    const result = val.match(regex).join('');
-    return result.toLowerCase();
+    try {
+        const regex = /[a-zA-Z0-9._]/gi
+        const result = val.match(regex).join('');
+        return result.toLowerCase();
+    } catch (error) {
+        console.log(CHALK.bold.red('Error!'));
+    }
+
 }
 
 const LoginPage = () => {
     const [randomBGImgVal, setRandomBGImgVal] = useState();
-
-    const [usernameVal, setUsernameVal] = useState('');
-    const [passwdVal, setPasswdVal] = useState('');
     const [showLoginForm, setShowLoginForm] = useState(true);
     const [showSignupForm, setShowSignupForm] = useState(false);
-    const [newUsernameVal, setNewUsernameVal] = useState('');
+    const [disableGoogleBtn, setDisableGoogleBtn] = useState(true);
+    const [newUsernameVal, setNewUsernameVal] = useState("");
 
-    const googlBtnHandler = () => {
-        console.log('SIGN IN PROCESS STARTED !⚡');
+    const signupHandler = () => {
+        console.log('❄️', newUsernameVal)
+        console.log('SIGN UP PROCESS STARTED !⚡');
         const googleProvider = new GoogleAuthProvider();
         signInWithPopup(auth, googleProvider)
             .then((data) => {
 
-                const userColsRef = collection(db, 'userprofiles');
+                const userProfileColsRef = collection(db, 'users-Profile');
+                const userIDColsRef = collection(db, 'users-ID');
+                addDoc(userProfileColsRef, {
+                    username: newUsernameVal,
+                    uid: data.user.uid,
+                    displayName: data.user.displayName,
+                    email: data.user.email,
+                    emailVerified: data.user.emailVerified,
+                    photoURL: data.user.photoURL,
+                    creationTime: data.user.metadata.creationTime
+                }).then(() => {
+                    addDoc(userIDColsRef, {
+                        username: newUsernameVal,
+                        email: data.user.email
+                    }).then(() => {
+                        console.log('PROFILE CREATED SUCESSFULLY ☠️')
+                    }).catch((err_1) => {
+                        console.log('👉 users-ID: ', err_1)
+                    })
+
+                }).catch((err2) => {
+                    console.log('👉 userprofile: ', err2)
+                })
+
+
+            }).catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const authUserHandler = () => {
+        console.log('LOG IN PROCESS STARTED !⚡');
+        const googleProvider = new GoogleAuthProvider();
+        signInWithPopup(auth, googleProvider)
+            .then((data) => {
+
+                const userColsRef = collection(db, 'user-Profiles');
                 addDoc(userColsRef, {
                     username: newUsernameVal,
                     uid: data.user.uid,
@@ -57,22 +98,17 @@ const LoginPage = () => {
             })
     }
 
-    // LOGIN-IN HANDLERS
-    const usernameFieldHandler = (event) => {
-        setUsernameVal(event.target.value);
-    }
-    const passwdFieldHandler = (event) => {
-        setPasswdVal(event.target.value);
-    }
-
-    const submitLoginHandler = () => {
-        // DETAILS WILL BE SENT TO FIREBASE 🔥🤨
-    }
-
     // SIGN UP DETAILS
     const newUsernameFieldHandler = (event) => {
+        console.log('⭕ Allowed: ', allowedUsername(event.target.value))
+        console.log('⭕ Def: ', event.target.value)
+        setNewUsernameVal(allowedUsername(event.target.value))
+        if (event.target.value.length >= 6) {
+            setDisableGoogleBtn(false);
+        } else if (event.target.value.length < 6) {
+            setDisableGoogleBtn(true);
+        }
 
-        setNewUsernameVal(allowedUsername(event.target.value));
     }
 
     const signupTxtHandler = () => {
@@ -85,8 +121,11 @@ const LoginPage = () => {
         setShowSignupForm(false)
     }
 
+    const clearInputField = (event) => {
+        setNewUsernameVal("")
+    }
+
     useEffect(() => {
-        console.log(auth)
         setRandomBGImgVal(getRandomNumberGenerator())
     }, [])
 
@@ -101,38 +140,19 @@ const LoginPage = () => {
                 {showLoginForm &&
                     <>
                         <LOGIN_FORM action="">
-                            <USERNAME_PASSWORD>
-                                <AtIcon />
-                                <INPUT
-                                    type="search"
-                                    value={usernameVal}
-                                    onChange={usernameFieldHandler}
-                                    placeholder="username"
-                                    spellCheck="false"
-                                />
-                            </USERNAME_PASSWORD>
-                            <USERNAME_PASSWORD>
-                                <KeyIcon />
-                                <INPUT
-                                    type="password"
-                                    value={passwdVal}
-                                    onChange={passwdFieldHandler}
-                                    placeholder="password"
-                                />
-                            </USERNAME_PASSWORD>
                             <Button
-                                type='submit'
-                                className='login-submitBtn shineEff'
-                                variant='contained'
-                                onClick={submitLoginHandler}
-                                disabled={!usernameVal || !passwdVal}
-                            >
-                                Log In
+                                onClick={authUserHandler}
+                                className='login_google_btn shineEff' variant='contained'>
+                                <img src={GOOGLE_LOGO} alt="google_logo" height="40px" />
+
+                                <span>
+                                    Log in with Google
+                                </span>
                             </Button>
                         </LOGIN_FORM>
 
                         <SWITCH_FORM_TYPE>
-                            <p>Don't have an account? <span onClick={signupTxtHandler}>&nbsp;SIGN UP!</span></p>
+                            <p>Don't have an account? <span className='underlineEff' onClick={signupTxtHandler}>&nbsp;SIGN UP!</span></p>
                         </SWITCH_FORM_TYPE>
                     </>}
 
@@ -147,26 +167,27 @@ const LoginPage = () => {
                                     onChange={newUsernameFieldHandler}
                                     placeholder="username"
                                     spellCheck="false"
+                                    title="Username must only contain alphabets, underscore or periods"
+
                                 />
+                                <ClearIcon onClick={clearInputField} />
+
                             </USERNAME_PASSWORD>
                             <Button
-                                onClick={googlBtnHandler}
-                                disabled={newUsernameVal.length !== 6}
-                                className='login_google_btn' variant='contained'>
+                                onClick={signupHandler}
+                                disabled={disableGoogleBtn}
+                                title="Enter username then you'll be able to sign in through google"
+                                className='login_google_btn shineEff' variant='contained'>
                                 <img src={GOOGLE_LOGO} alt="google_logo" height="30px" />
 
                                 <span>
                                     Sign in with Google
                                 </span>
                             </Button>
-
-                            <p className='signInErrorMssg'>
-                                {'redErrorBelowMssg'}
-                            </p>
                         </SIGNUP_FORM>
 
                         <SWITCH_FORM_TYPE>
-                            <p>Already have an account? <span onClick={loginTxtHandler}>&nbsp;LOG IN!</span></p>
+                            <p>Already have an account? <span className='underlineEff' onClick={loginTxtHandler}>&nbsp;LOG IN!</span></p>
                         </SWITCH_FORM_TYPE>
                     </>}
             </div>
@@ -191,17 +212,11 @@ box-shadow: 3px 3px 5px #48484817;
 
 p{
     color: #898989;
-    cursor: default;
+    cursor: pointer;
 }
 span {
     font-weight: 600;
     color: #232323;
-}
-
-span:hover {
-    cursor: pointer;
-    transition: all 500ms ease-in;
-    text-decoration: underline;
 }
 `
 
@@ -257,9 +272,12 @@ const INPUT = STYLED.input`
   border: none;
   width: 100%;
 
+    input ::-ms-clear {
+    display: none;
+}
+
 ::placeholder {
   color: lightgray;
-}
-`
+}`
 
 export default LoginPage;
