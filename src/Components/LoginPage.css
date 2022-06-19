@@ -17,27 +17,34 @@
 .backgroundImg-3 {
   background-image: url(/src/Assets/login_img3.3.jpg);
 }
-.backgroundImg-4 {
-  background-image: url(/src/Assets/login_img4.4.jpg);
-}
-.backgroundImg-5 {
-  background-image: url(/src/Assets/login_img5.5.jpg);
-}
-.backgroundImg-6 {
-  background-image: url(/src/Assets/login_img6.6.jpg);
-}
 
 .login_form {
   padding: 1.8em 7em;
   background-color: #fffc00;
-  border-radius: 1em;
+  border-radius: 0.4em;
   -webkit-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   -moz-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
-
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 10;
+}
+
+.human {
+  position: absolute;
+}
+
+.human2 {
+  height: 24em;
+  top: 2%;
+  left: 0;
+}
+
+.human3 {
+  top: 0;
+  left: 0;
+  height: 25em;
 }
 
 .login_form .logo_span {
@@ -47,7 +54,6 @@
   margin-bottom: 2em;
   filter: drop-shadow(4px 2px 35px #a4a4a4);
 }
-
 .login_form .login-submitBtn {
   background-color: #232323;
   padding: 0.2em 1em;
@@ -62,18 +68,17 @@
 .login_form .login_google_btn {
   display: flex;
   align-items: center;
-  background-color: #232323;
-  color: #fefefe;
+  background-color: #fff;
   margin-bottom: 10px;
   border-radius: 0.5rem;
-  font-size: 0.8em;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
-  padding: 10px 30px;
+  padding: 5px 20px;
   cursor: pointer;
   box-shadow: 3px 3px 5px #48484817;
-  width: 100%;
   white-space: nowrap;
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: 1em;
+  color: #232323;
 }
 
 .login_form .login_google_btn span {
@@ -81,7 +86,10 @@
 }
 
 .login_form .login_google_btn:hover {
-  background-color: #232323;
+  transition: all 700ms ease-in-out;
+  background-color: rgb(231, 227, 227);
+  color: #232323;
+  box-shadow: 5px 5px 5px #48484817;
 }
 
 .login_form .login_google_btn:disabled {
