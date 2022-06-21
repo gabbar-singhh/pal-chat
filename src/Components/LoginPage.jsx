@@ -7,8 +7,11 @@ import { auth } from '../firebase-config';
 import { db } from '../firebase-config';
 import { Button } from '@mui/material';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 import CHALK from 'chalk';
+import AtIcon from '@mui/icons-material/AlternateEmail';
+import CrossIcon from '@mui/icons-material/Clear';
+import TickIcon from '@mui/icons-material/Done';
 
 import HUMAN_2 from '../Assets/human_3d/2.png'
 import HUMAN_3 from '../Assets/human_3d/3.png'
@@ -25,56 +28,94 @@ const allowedUsername = (val) => {
         return result.toLowerCase();
     } catch (error) {
         console.log(CHALK.bold.red('Error!'));
+        console.log(error)
     }
 
 }
 
 const LoginPage = () => {
-    const [randomBGImgVal, setRandomBGImgVal] = useState();
+    const [randomBGImgVal, setRandomBGImgVal] = useState("");
     const [newUsernameVal, setNewUsernameVal] = useState("");
-    const [showUsernameDialog, setShowUsernameDialog] = useState(true);
+
+    const [showGoogleBtn, setShowGoogleBtn] = useState(true);
+    const [showUsernameDialog, setShowUsernameDialog] = useState(false);
+    const [showCross, setShowCross] = useState(false);
+    const [showTick, setShowTick] = useState(false)
+
 
     const authUserHandler = () => {
-        console.log('❄️', newUsernameVal)
-        console.log('SIGN UP PROCESS STARTED !⚡');
+        console.log("🔐")
+        const emailListArr = [];
+
         const googleProvider = new GoogleAuthProvider();
         signInWithPopup(auth, googleProvider)
             .then((data) => {
 
+                //FULL DETAILS ABOUT USERS 
                 const userProfileColsRef = collection(db, 'users-Profile');
-                const userIDColsRef = collection(db, 'users-ID');
-                addDoc(userProfileColsRef, {
-                    username: newUsernameVal,
-                    uid: data.user.uid,
-                    displayName: data.user.displayName,
-                    email: data.user.email,
-                    emailVerified: data.user.emailVerified,
-                    photoURL: data.user.photoURL,
-                    creationTime: data.user.metadata.creationTime
-                }).then(() => {
-                    addDoc(userIDColsRef, {
-                        username: newUsernameVal,
-                        email: data.user.email
-                    }).then(() => {
-                        console.log('PROFILE CREATED SUCESSFULLY ☠️')
-                    }).catch((err_1) => {
-                        console.log('👉 users-ID: ', err_1)
-                    })
 
-                }).catch((err2) => {
-                    console.log('👉 userprofile: ', err2)
+                //ONLY USERNAME AND EMAIL-ID 
+                const colRef = collection(db, "users-ID");
+
+                getDocs(colRef).then((snapshot) => {
+                    snapshot.docs.forEach(element => {
+                        emailListArr.push(element.data().email)
+                    });
                 })
 
+                // console.log(data.user.email)
+                if (emailListArr.includes(data.user.email)) {
+                    console.log(CHALK.red("Account already exists!"))
+                    //ACCOUNT ALREADY EXISTS, SO NO NEED TO SHOW USERNAME-DIALOG DIRECTLY GIVE ACCESS TO THEIR CHATS!
 
-            }).catch((err) => {
-                console.log(err)
+
+                } else if (!emailListArr.includes(data.user.email)) {
+                    // IF ACCOUNT DIDN'T MATCHED THEN CREATE A NEW ACCOUNT (THEN WILL HAVE TO SHOW USERNAME DIALOG ) 
+                    setShowUsernameDialog(true) // showing username-dialog
+                    setShowGoogleBtn(false) // google login in btn hidden
+                }
+
             })
     }
 
+    const checkUsernameAvail = (event) => {
+        console.log(event.target.value)
+        const list = [];
+        if (event.target.value.length >= 6) {
+            const colRef = collection(db, "users-ID");
+            getDocs(colRef).then((snapshot) => {
+                snapshot.docs.forEach(element => {
+                    list.push(element.data().username);
+                    if (list.includes(event.target.value) === true) {
+                        setTimeout(() => {
+                            setShowCross(true);
+                            setShowTick(false);
+                        }, 800);
+                    } else if (list.includes(event.target.value) === false) {
+                        setTimeout(() => {
+                            setShowCross(false);
+                            setShowTick(true);
+                        }, 800);
+                    }
+                });
+            })
+        } else {
+            setShowCross(false);
+            setShowTick(false);
+        }
+    }
 
     // SIGN UP DETAILS
-    const clearInputField = (event) => {
-        setNewUsernameVal("")
+    const newUsernameFieldHandler = (event) => {
+        setNewUsernameVal(allowedUsername(event.target.value))
+
+        if (event.target.value.length >= 6) {
+            // else do nothingS
+
+        } else if (event.target.value.length < 6) {
+            // setDisableGoogleBtn(true);
+        }
+
     }
 
     useEffect(() => {
@@ -82,34 +123,41 @@ const LoginPage = () => {
     }, [])
 
     return (
-        <section className={`loginpage_section ${'backgroundImg-' + randomBGImgVal}`}>
-
+        // randomBGImgVal
+        <section className={`loginpage_section ${'backgroundImg-' + 1}`}>
             {randomBGImgVal === 2 && <img src={HUMAN_2} className="human human2" alt="" />}
             {randomBGImgVal === 3 && <img src={HUMAN_3} className="human human3" alt="" />}
+
+
 
             <div className="login_form">
 
                 <div className='logo_span'>
                     <img src={LOGO} alt="palchat-logo" height="125px" />
                 </div>
-                {!showUsernameDialog &&
-                    <LOGIN_FORM action="">
-                        <Button
-                            onClick={authUserHandler}
-                            className='login_google_btn bubbleEff' variant='contained'>
-                            <img src={GOOGLE_LOGO} alt="google_logo" height="40px" />
 
-                            <span>
-                                Log in with Google
-                            </span>
-                        </Button>
-                    </LOGIN_FORM>
-                }
+                <SIGNUP_FORM>
+                    {showGoogleBtn && <Button
+                        onClick={authUserHandler}
+                        title="Enter username then you'll be able to sign in through google"
+                        className='login_google_btn shineEff' variant='contained'>
+                        <img src={GOOGLE_LOGO} alt="google_logo" height="30px" />
 
-                {showUsernameDialog &&
-                    <LOGIN_FORM>
-                        
-                    </LOGIN_FORM>}
+                        <span>
+                            Login in with Google
+                        </span>
+                    </Button>}
+
+                    {!showUsernameDialog && <USERNAME>
+                        <AtIcon />
+                        <INPUT
+                            placeholder='username'
+                            
+
+                        />
+                    </USERNAME>}
+                </SIGNUP_FORM>
+
 
             </div>
         </section >
@@ -117,50 +165,39 @@ const LoginPage = () => {
 
 }
 
-const SWITCH_FORM_TYPE = STYLED.div`
-margin-top: 1.5em;
+const SIGNUP_FORM = STYLED.form`
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+`
+const USERNAME = STYLED.div`
+display: flex;
+justify-content:center;
 background-color: #fff;
-padding: 0.5em 1em;
-border-radius: 1em;
-box-shadow: 3px 3px 5px #48484817;
-
-p{
-    color: #898989;
-    cursor: pointer;
-}
-span {
-    font-weight: 600;
-    color: #232323;
-}
+color: lightgray;
+border-radius: 0.5rem;
+padding: 0.5em 0.6em;
+margin-bottom: 0.5em;
+box-shadow: 3px 3px 5px #cbc8c85e;
+width:90%;
 `
-
-const LOGIN_FORM = STYLED.form`
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  display: none;
-}
-
+const INPUT = STYLED.input`
+  padding: 0.2em 0em;
+  color: #232323b3;
+  outline: none;
+  font-size: 1em;
   border-radius: 0.5rem;
-  padding: 0.3em 0.3em;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  text-decoration: none;
+  border: none;
+  width: 90%;
 
-
-@media screen and (min-width: 0px) and (max-width: 360px) {
-    margin: 1em 0.8em;
+    input ::-ms-clear {
+    display: none;
 }
 
-@media screen and (min-width: 360px) and (max-width: 480px) {
-    margin-right: 1em;
-}
-
-@media screen and (min-width: 481px) and (max-width: 768px) {
-    margin-right: 1em;
-}
-`
+::placeholder {
+  color: lightgray;
+}`
 
 export default LoginPage;

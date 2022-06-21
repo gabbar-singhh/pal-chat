@@ -26,6 +26,7 @@
   -moz-box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   box-shadow: 7px 7px 98px -11px rgba(0, 0, 0, 0.44);
   display: flex;
+  width:20%;
   flex-direction: column;
   align-items: center;
   z-index: 10;
@@ -68,7 +69,7 @@
 .login_form .login_google_btn {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #232323;
   margin-bottom: 10px;
   border-radius: 0.5rem;
   padding: 5px 20px;
@@ -76,9 +77,10 @@
   box-shadow: 3px 3px 5px #48484817;
   white-space: nowrap;
   font-family: "Inter", sans-serif;
-  font-weight: 900;
-  font-size: 1em;
-  color: #232323;
+  font-weight: 700;
+  font-size: 0.8em;
+  color: #fff;
+  width: 20.5em;
 }
 
 .login_form .login_google_btn span {
@@ -87,11 +89,64 @@
 
 .login_form .login_google_btn:hover {
   transition: all 700ms ease-in-out;
-  background-color: rgb(231, 227, 227);
-  color: #232323;
+  background-color: #343333;
+  color: #fff;
   box-shadow: 5px 5px 5px #48484817;
 }
 
 .login_form .login_google_btn:disabled {
   background-color: rgba(255, 255, 255, 0.684);
+}
+
+/*  */
+
+.rotateAnimate {
+  width: 1.2em;
+  transform-origin: center;
+  animation: rotate 2s linear infinite;
+}
+
+.rotateAnimate svg circle {
+  fill: none;
+  stroke: #fffc00;
+  stroke-width: 5;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}
+
+.usernameStatus-indicator {
+}
+
+.crossIcon {
+  color: red;
+  height: 1em;
+  padding: 0 0;
+}
+
+.tickIcon {
+  color: green;
+  height: 1em;
+  padding: 0 0;
 }
