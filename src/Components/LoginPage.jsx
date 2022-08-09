@@ -159,7 +159,7 @@ const LoginPage = () => {
                             <>
                                 <USERNAME>
                                     <AtIcon />
-                                    <INPUT  
+                                    <INPUT
                                         value={newUsernameVal}
                                         onChange={usernameInputHandler}
                                         type="search"
