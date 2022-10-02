@@ -21,12 +21,16 @@ const getRandomNumberGenerator = () => {
 
 const allowedUsername = (val) => {
     try {
+
         const regex = /[a-zA-Z0-9._]/gi
         const result = val.match(regex).join('');
         return result.toLowerCase();
+
     } catch (error) {
+
         console.log(CHALK.bold.red('Error!'));
         console.log(error)
+
     }
 
 }
@@ -39,7 +43,7 @@ const LoginPage = () => {
     const [showUsernameDialog, setShowUsernameDialog] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false)
     const [snackbarVal, setSnackbarVal] = useState({ type: "success", mssg: "", autoHideDuration: 2000 });
-
+    const [userdata, setUserdata] = useState({});
 
     const authUserHandler = () => {
         console.log("🔐")
@@ -49,23 +53,30 @@ const LoginPage = () => {
         signInWithPopup(auth, googleProvider)
             .then((data) => {
 
+                // ADDING ACCOUNT-DATA TO VARIABLE FOR LATER USE
+
+                setUserdata({ data: data })
+
                 //FULL DETAILS ABOUT USERS 
                 const userProfileColsRef = collection(db, 'users-Profile');
 
                 //ONLY USERNAME AND EMAIL-ID 
                 const colRef = collection(db, "users-ID");
-
                 getDocs(colRef).then((snapshot) => {
                     snapshot.docs.forEach(element => {
-                        emailListArr.push(element.data().email)
+                        // console.log(element.data().email_id);
+                        emailListArr.push(element.data().email_id)
                     });
                 })
                 console.log(CHALK.cyan("-getDocs ✔"))
 
-                // console.log(data.user.email)
+                console.log(emailListArr)
+
                 console.log(CHALK.cyan("-checking emailID ✔"))
+
                 if (emailListArr.includes(data.user.email)) {
                     console.log(CHALK.red("Account already exists!"))
+
                     //ACCOUNT ALREADY EXISTS, SO NO NEED TO SHOW USERNAME-DIALOG DIRECTLY GIVE ACCESS TO THEIR CHATS!
                     console.log(CHALK.cyan("-Account Found ✔"))
                     setSnackbarOpen(true);
@@ -78,7 +89,7 @@ const LoginPage = () => {
                     // IF ACCOUNT DIDN'T MATCHED THEN CREATE A NEW ACCOUNT (THEN WILL HAVE TO SHOW USERNAME DIALOG ) 
                     console.log(CHALK.cyan("-creating an account ✔"))
                     setSnackbarOpen(true);
-                    setSnackbarVal({ type: "info", mssg: "Account didn't exists! Creating an Account...", autoHideDuration: 6000 });
+                    setSnackbarVal({ type: "info", mssg: "Account didn't exist! Creating an Account...", autoHideDuration: 6000 });
                     setShowUsernameDialog(true) // showing username-dialog
                     setShowGoogleBtn(false) // google login in btn hidden
                 }
@@ -87,6 +98,8 @@ const LoginPage = () => {
     }
 
     const submitBtnHandler = (event) => {
+        const userProfileColsRef = collection(db, 'users-Profile');
+
         const usernameList = [];
         if (newUsernameVal.length >= 6) {
             //ONLY USERNAME AND EMAIL-ID 
@@ -94,10 +107,11 @@ const LoginPage = () => {
 
             getDocs(colRef).then((snapshot) => {
                 snapshot.docs.forEach(element => {
+                    console.log('🎂', element);
                     usernameList.push(element.data().username);
                 })
             });
-
+                console.log('😮‍💨',event.target.value)
             if (usernameList.includes(event.target.value)) {
                 console.log(CHALK.cyan("-username already exists, select another ✔"))
                 setNewUsernameVal("")
@@ -106,6 +120,32 @@ const LoginPage = () => {
             } else if (!usernameList.includes(event.target.value)) {
                 // CREATE THE ACCOUNT WITH THE PROVIDED USERNAME! 
                 console.log(CHALK.green("-Account Creating Process...✔"))
+
+                console.log('🤢', userdata.data._tokenResponse.email)
+
+                addDoc(userProfileColsRef, {
+
+                    "display_name": userdata.data.user.displayName,
+                    "email_id": userdata.data._tokenResponse.email,
+                    "isEmailVerified": userdata.data._tokenResponse.emailVerified,
+                    "first_name": userdata.data._tokenResponse.firstName,
+                    "last_name": userdata.data._tokenResponse.lastName,
+                    "full_name": userdata.data._tokenResponse.fullName,
+                    "photoURL": userdata.data._tokenResponse.photoUrl,
+                    "creation_time": userdata.data.user.metadata.creationTime,
+                    "browser_name": userdata.data.user.auth.config.sdkClientVersion,
+                    "username": newUsernameVal
+
+                }).then(() => {
+                    addDoc(colRef, {
+                        "email_id": userdata.data._tokenResponse.email,
+                        "username": newUsernameVal
+                    })
+                })
+
+
+                console.log('Done');
+                // LOGIN PAGE COMPLETED !!
             }
 
         } else {
@@ -120,7 +160,7 @@ const LoginPage = () => {
     }
 
     useEffect(() => {
-        setRandomBGImgVal(getRandomNumberGenerator())
+        // setRandomBGImgVal(getRandomNumberGenerator())
     }, [])
 
     return (

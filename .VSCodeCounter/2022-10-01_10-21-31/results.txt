@@ -1,0 +1,46 @@
+Date : 2022-10-01 10:21:31
+Directory : p:\palchat-folder\pal-chat
+Total : 13 files,  32992 codes, 11 comments, 111 blanks, all 33114 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| JSON             |          3 |     32,520 |          0 |          3 |     32,523 |
+| JavaScript React |          2 |        195 |          8 |         36 |        239 |
+| CSS              |          3 |        184 |          0 |         28 |        212 |
+| Markdown         |          1 |         38 |          0 |         33 |         71 |
+| JavaScript       |          3 |         35 |          3 |          9 |         47 |
+| HTML             |          1 |         20 |          0 |          2 |         22 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                      |         13 |     32,992 |         11 |        111 |     33,114 |
+| public                                                                 |          2 |         45 |          0 |          3 |         48 |
+| src                                                                    |          8 |        414 |         11 |         73 |        498 |
+| src\Components                                                         |          3 |        316 |          8 |         52 |        376 |
+| src\Components\BaiscComponents                                         |          1 |         17 |          0 |          2 |         19 |
++------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                               | language         | code       | comment    | blank      | total      |
++------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| p:\palchat-folder\pal-chat\README.md                                   | Markdown         |         38 |          0 |         33 |         71 |
+| p:\palchat-folder\pal-chat\package-lock.json                           | JSON             |     32,449 |          0 |          1 |     32,450 |
+| p:\palchat-folder\pal-chat\package.json                                | JSON             |         46 |          0 |          1 |         47 |
+| p:\palchat-folder\pal-chat\public\index.html                           | HTML             |         20 |          0 |          2 |         22 |
+| p:\palchat-folder\pal-chat\public\manifest.json                        | JSON             |         25 |          0 |          1 |         26 |
+| p:\palchat-folder\pal-chat\src\App.css                                 | CSS              |         51 |          0 |         10 |         61 |
+| p:\palchat-folder\pal-chat\src\App.js                                  | JavaScript       |          8 |          0 |          3 |         11 |
+| p:\palchat-folder\pal-chat\src\Components\BaiscComponents\Snackbar.jsx | JavaScript React |         17 |          0 |          2 |         19 |
+| p:\palchat-folder\pal-chat\src\Components\LoginPage.css                | CSS              |        121 |          0 |         16 |        137 |
+| p:\palchat-folder\pal-chat\src\Components\LoginPage.jsx                | JavaScript React |        178 |          8 |         34 |        220 |
+| p:\palchat-folder\pal-chat\src\firebase-config.js                      | JavaScript       |         17 |          3 |          5 |         25 |
+| p:\palchat-folder\pal-chat\src\index.css                               | CSS              |         12 |          0 |          2 |         14 |
+| p:\palchat-folder\pal-chat\src\index.js                                | JavaScript       |         10 |          0 |          1 |         11 |
+| Total                                                                  |                  |     32,992 |         11 |        111 |     33,114 |
++------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

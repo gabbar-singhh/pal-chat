@@ -1,0 +1,15 @@
+"filename", "language", "JSON", "Markdown", "JavaScript", "CSS", "JavaScript React", "HTML", "comment", "blank", "total"
+"p:\palchat-folder\pal-chat\README.md", "Markdown", 0, 38, 0, 0, 0, 0, 0, 33, 71
+"p:\palchat-folder\pal-chat\package-lock.json", "JSON", 32449, 0, 0, 0, 0, 0, 0, 1, 32450
+"p:\palchat-folder\pal-chat\package.json", "JSON", 46, 0, 0, 0, 0, 0, 0, 1, 47
+"p:\palchat-folder\pal-chat\public\index.html", "HTML", 0, 0, 0, 0, 0, 20, 0, 2, 22
+"p:\palchat-folder\pal-chat\public\manifest.json", "JSON", 25, 0, 0, 0, 0, 0, 0, 1, 26
+"p:\palchat-folder\pal-chat\src\App.css", "CSS", 0, 0, 0, 51, 0, 0, 0, 10, 61
+"p:\palchat-folder\pal-chat\src\App.js", "JavaScript", 0, 0, 8, 0, 0, 0, 0, 3, 11
+"p:\palchat-folder\pal-chat\src\Components\BaiscComponents\Snackbar.jsx", "JavaScript React", 0, 0, 0, 0, 17, 0, 0, 2, 19
+"p:\palchat-folder\pal-chat\src\Components\LoginPage.css", "CSS", 0, 0, 0, 121, 0, 0, 0, 16, 137
+"p:\palchat-folder\pal-chat\src\Components\LoginPage.jsx", "JavaScript React", 0, 0, 0, 0, 178, 0, 8, 34, 220
+"p:\palchat-folder\pal-chat\src\firebase-config.js", "JavaScript", 0, 0, 17, 0, 0, 0, 3, 5, 25
+"p:\palchat-folder\pal-chat\src\index.css", "CSS", 0, 0, 0, 12, 0, 0, 0, 2, 14
+"p:\palchat-folder\pal-chat\src\index.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 1, 11
+"Total", "-", 32520, 38, 35, 184, 195, 20, 11, 111, 33114
